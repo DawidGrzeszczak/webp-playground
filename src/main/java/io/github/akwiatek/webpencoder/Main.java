@@ -21,16 +21,16 @@ public class Main {
     }
     System.out.println("pngBytes: " + pngBytes.length);
 
-    byte[] webpBytes = pngToWebpJni(pngBytes);
+    byte[] webpBytes = pngToWebp(pngBytes);
     try (var os = new FileOutputStream("/tmp/screenshot.webp")) {
       os.write(webpBytes);
     }
     System.out.println("webpBytes: " + webpBytes.length);
   }
 
-  private byte[] pngToWebpJni(byte[] pngBytes) throws IOException {
+  private byte[] pngToWebp(byte[] pngBytes) throws IOException {
     try (
-        var bais  = new ByteArrayInputStream(pngBytes);
+        var bais = new ByteArrayInputStream(pngBytes);
         var baos = new ByteArrayOutputStream();
         var ios = ImageIO.createImageOutputStream(baos);
     ) {
