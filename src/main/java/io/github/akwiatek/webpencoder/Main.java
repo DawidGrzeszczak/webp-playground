@@ -4,8 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
 import org.apache.commons.io.IOUtils;
 
 public class Main {
@@ -16,13 +19,13 @@ public class Main {
 
   private void runViaJni() throws IOException {
     byte[] pngBytes;
-    try (var is = getClass().getResourceAsStream("screenshot.png")) {
+    try (InputStream is = getClass().getResourceAsStream("screenshot.png")) {
       pngBytes = IOUtils.toByteArray(is);
     }
     System.out.println("pngBytes: " + pngBytes.length);
 
     byte[] webpBytes = pngToWebp(pngBytes);
-    try (var os = new FileOutputStream("/tmp/screenshot.webp")) {
+    try (FileOutputStream os = new FileOutputStream("/tmp/screenshot.webp")) {
       os.write(webpBytes);
     }
     System.out.println("webpBytes: " + webpBytes.length);
@@ -30,12 +33,12 @@ public class Main {
 
   private byte[] pngToWebp(byte[] pngBytes) throws IOException {
     try (
-        var bais = new ByteArrayInputStream(pngBytes);
-        var baos = new ByteArrayOutputStream();
-        var ios = ImageIO.createImageOutputStream(baos);
+        ByteArrayInputStream bais = new ByteArrayInputStream(pngBytes);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageOutputStream ios = ImageIO.createImageOutputStream(baos);
     ) {
       // ImageIO closes this stream automatically
-      var iis = ImageIO.createImageInputStream(bais);
+      ImageInputStream iis = ImageIO.createImageInputStream(bais);
       boolean encoded = ImageIO.write(ImageIO.read(iis), "webp", ios);
       if (!encoded) {
         throw new IIOException("Could not encode as WebP");
