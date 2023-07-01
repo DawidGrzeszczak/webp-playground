@@ -28,7 +28,7 @@ public class Main {
     System.out.println("webpBytes: " + webpBytes.length);
   }
 
-  private byte[] pngToWebp(byte[] pngBytes) throws IOException {
+  public byte[] pngToWebp(byte[] pngBytes) throws IOException {
     try (
         var bais = new ByteArrayInputStream(pngBytes);
         var baos = new ByteArrayOutputStream();
