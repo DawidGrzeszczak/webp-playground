@@ -9,13 +9,13 @@ import java.util.Arrays;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
-class MainTest {
+class WebpConvertServiceTest {
 
   private static final byte[] PNG_SIGNATURE = {(byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A,
       0x0A};
   private static final byte[] WEBP_SIGNATURE = {0x52, 0x49, 0x46, 0x46};
 
-  private final Main main = new Main();
+  private final WebpConvertService service = new WebpConvertService();
 
   @Test
   void findsInputPng() throws IOException {
@@ -28,7 +28,7 @@ class MainTest {
   @Test
   void itEncodesPngToWepb() throws IOException {
     byte[] pngBytes = loadFile("screenshot.png");
-    byte[] webpBytes = main.pngToWebp(pngBytes);
+    byte[] webpBytes = service.pngToWebp(pngBytes);
 
     assertNotNull(webpBytes);
     assertTrue(isWebp(webpBytes), "Expected WebP signature");
